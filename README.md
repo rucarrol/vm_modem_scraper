@@ -6,14 +6,24 @@ A scraper for the Virgin Media Hub 6. Exports mostly DOCSIS stats.
 
 Container can be run from the GitHub Container Registry: 
 ```shell
-docker run --rm -it --name vmscrape -p 8000:8000 -e GATEWAY_IP="192.168.0.1" -e LISTEN_IP="0.0.0.0" -e LISTEN_PORT=8000  ghcr.io/rucarrol/vm_modem_scraper:latest
+docker run --rm -it --name vmscrape \
+-p 8000:8000 \
+-e GATEWAY_IP="192.168.0.1" \
+-e LISTEN_IP="0.0.0.0" \
+-e LISTEN_PORT=8000  \
+ghcr.io/rucarrol/vm_modem_scraper:latest
 ```
 
 Alterantively, you can build the container, then run it:
 
 ```shell
 docker build -t docsis_exporter:latest -f Dockerfile . 
-docker run --rm -it --name vmscrape -p 8000:8000 -e GATEWAY_IP="192.168.0.1" -e LISTEN_IP="0.0.0.0" -e LISTEN_PORT=8000 docsis_exporter:latest
+docker run --rm -it --name vmscrape \
+-p 8000:8000 \
+-e GATEWAY_IP="192.168.0.1" \
+-e LISTEN_IP="0.0.0.0" \
+-e LISTEN_PORT=8000  \
+docsis_exporter:latest
 ```
 
 Then you can setup a scrape job in prometheus/victoria metrics:
