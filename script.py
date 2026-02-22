@@ -102,7 +102,12 @@ class Metrics:
 
     def _fetch_url(self, url: str) -> dict:
         r = request.urlopen(url)
-        self._inc_req(r)
+        try:
+            self._inc_req(r)
+        except Exception as e:
+            logging.error(f"Failed to successfully get URL {url}: {r}")
+            self._inc_req(r)
+            return dict()
         if r.code != 200:
             return dict()
         return json.loads(r.read().decode())
