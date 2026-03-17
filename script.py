@@ -1,4 +1,5 @@
 from urllib import request
+from urllib.error import HTTPError
 import json
 from prometheus_client import start_http_server, Counter, Gauge
 from time import sleep
@@ -101,10 +102,11 @@ class Metrics:
         REST_SERVER_ERR.labels(statuscode=url.code).inc()
 
     def _fetch_url(self, url: str) -> dict:
-        r = request.urlopen(url)
+        r = None
         try:
+            r = request.urlopen(url)
             self._inc_req(r)
-        except Exception as e:
+        except HTTPError as e:
             logging.error(f"Failed to successfully get URL {url}: {r}")
             self._inc_req(r)
             return dict()
