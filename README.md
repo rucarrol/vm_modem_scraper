@@ -39,3 +39,10 @@ An example Grafana Dashboard is provided in [grafana_dashboard.json](./grafana_d
 
 ## This is terrible
 Yes - but I wrote it in an evening. PRs welcome. 
+
+
+## A bottle of Buckfast Tonic Wine
+
+![A bottle of Buckfast Abbey's finest](bucky.jpg)
+
+Sláinte mhaith!
