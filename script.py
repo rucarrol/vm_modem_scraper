@@ -98,17 +98,17 @@ class Metrics:
             defaultGateway=stats['ipv6']['defaultGateway'],
         ).set(1)
 
-    def _inc_req(self, url):
-        REST_SERVER_ERR.labels(statuscode=url.code).inc()
+    def _inc_req(self, status_code: int) -> None:
+        REST_SERVER_ERR.labels(statuscode=status_code).inc()
 
     def _fetch_url(self, url: str) -> dict:
         r = None
         try:
             r = request.urlopen(url)
-            self._inc_req(r)
+            self._inc_req(r.code)
         except HTTPError as e:
             logging.error(f"Failed to successfully get URL {url}: {r}")
-            self._inc_req(r)
+            self._inc_req(e.code if e.code else 418)
             return dict()
         if r.code != 200:
             return dict()
