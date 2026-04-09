@@ -103,14 +103,15 @@ class Metrics:
 
     def _fetch_url(self, url: str) -> dict:
         r = None
+        ret_code = 418
         try:
             r = request.urlopen(url)
-            self._inc_req(r.code)
+            ret_code = getattr(r, "code", 418)
         except HTTPError as e:
-            logging.error(f"Failed to successfully get URL {url}: {r}")
-            self._inc_req(e.code if e.code else 418)
-            return dict()
-        if r.code != 200:
+            logging.info(f"Failed to successfully get URL {url}: {r}")
+            ret_code = getattr(e, "code", 418)
+        self._inc_req(ret_code)
+        if not r:
             return dict()
         return json.loads(r.read().decode())
 
